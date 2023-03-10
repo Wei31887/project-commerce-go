@@ -2,13 +2,14 @@
 INSERT INTO products (
   name,
   category_id,
+  image,
   stock,
   sell,
   price,
   on_sell,
   description
 ) VALUES (
-  $1, $2, $3, $4, $5, $6, $7
+  $1, $2, $3, $4, $5, $6, $7, $8
 ) RETURNING *;
 
 -- name: GetProduct :one

@@ -14,19 +14,21 @@ const createProduct = `-- name: CreateProduct :one
 INSERT INTO products (
   name,
   category_id,
+  image,
   stock,
   sell,
   price,
   on_sell,
   description
 ) VALUES (
-  $1, $2, $3, $4, $5, $6, $7
-) RETURNING id, name, category_id, stock, sell, price, on_sell, description, created_at, updated_at
+  $1, $2, $3, $4, $5, $6, $7, $8
+) RETURNING id, name, category_id, image, stock, sell, price, on_sell, description, created_at, updated_at
 `
 
 type CreateProductParams struct {
 	Name        string `json:"name"`
 	CategoryID  int64  `json:"category_id"`
+	Image       string `json:"image"`
 	Stock       int64  `json:"stock"`
 	Sell        int64  `json:"sell"`
 	Price       string `json:"price"`
@@ -38,6 +40,7 @@ func (q *Queries) CreateProduct(ctx context.Context, arg CreateProductParams) (P
 	row := q.db.QueryRowContext(ctx, createProduct,
 		arg.Name,
 		arg.CategoryID,
+		arg.Image,
 		arg.Stock,
 		arg.Sell,
 		arg.Price,
@@ -49,6 +52,7 @@ func (q *Queries) CreateProduct(ctx context.Context, arg CreateProductParams) (P
 		&i.ID,
 		&i.Name,
 		&i.CategoryID,
+		&i.Image,
 		&i.Stock,
 		&i.Sell,
 		&i.Price,
@@ -71,7 +75,7 @@ func (q *Queries) DeleteProduct(ctx context.Context, id int64) error {
 }
 
 const getProduct = `-- name: GetProduct :one
-SELECT id, name, category_id, stock, sell, price, on_sell, description, created_at, updated_at FROM products
+SELECT id, name, category_id, image, stock, sell, price, on_sell, description, created_at, updated_at FROM products
 WHERE id = $1 LIMIT 1
 `
 
@@ -82,6 +86,7 @@ func (q *Queries) GetProduct(ctx context.Context, id int64) (Product, error) {
 		&i.ID,
 		&i.Name,
 		&i.CategoryID,
+		&i.Image,
 		&i.Stock,
 		&i.Sell,
 		&i.Price,
@@ -94,7 +99,7 @@ func (q *Queries) GetProduct(ctx context.Context, id int64) (Product, error) {
 }
 
 const listProduct = `-- name: ListProduct :many
-SELECT id, name, category_id, stock, sell, price, on_sell, description, created_at, updated_at FROM products
+SELECT id, name, category_id, image, stock, sell, price, on_sell, description, created_at, updated_at FROM products
 ORDER BY id
 LIMIT $1
 OFFSET $2
@@ -118,6 +123,7 @@ func (q *Queries) ListProduct(ctx context.Context, arg ListProductParams) ([]Pro
 			&i.ID,
 			&i.Name,
 			&i.CategoryID,
+			&i.Image,
 			&i.Stock,
 			&i.Sell,
 			&i.Price,
@@ -140,7 +146,7 @@ func (q *Queries) ListProduct(ctx context.Context, arg ListProductParams) ([]Pro
 }
 
 const listProductByType = `-- name: ListProductByType :many
-SELECT id, name, category_id, stock, sell, price, on_sell, description, created_at, updated_at FROM products
+SELECT id, name, category_id, image, stock, sell, price, on_sell, description, created_at, updated_at FROM products
 WHERE category_id = $1
 ORDER BY id
 LIMIT $2
@@ -166,6 +172,7 @@ func (q *Queries) ListProductByType(ctx context.Context, arg ListProductByTypePa
 			&i.ID,
 			&i.Name,
 			&i.CategoryID,
+			&i.Image,
 			&i.Stock,
 			&i.Sell,
 			&i.Price,
@@ -198,7 +205,7 @@ UPDATE products SET
     description = $8,
     updated_at = $9
 WHERE id = $1
-RETURNING id, name, category_id, stock, sell, price, on_sell, description, created_at, updated_at
+RETURNING id, name, category_id, image, stock, sell, price, on_sell, description, created_at, updated_at
 `
 
 type UpdateProductParams struct {
@@ -230,6 +237,7 @@ func (q *Queries) UpdateProduct(ctx context.Context, arg UpdateProductParams) (P
 		&i.ID,
 		&i.Name,
 		&i.CategoryID,
+		&i.Image,
 		&i.Stock,
 		&i.Sell,
 		&i.Price,
@@ -247,7 +255,7 @@ UPDATE products SET
     sell = sell + $4,
     updated_at = $2
 WHERE id = $1
-RETURNING id, name, category_id, stock, sell, price, on_sell, description, created_at, updated_at
+RETURNING id, name, category_id, image, stock, sell, price, on_sell, description, created_at, updated_at
 `
 
 type UpdateProductStockSellParams struct {
@@ -269,6 +277,7 @@ func (q *Queries) UpdateProductStockSell(ctx context.Context, arg UpdateProductS
 		&i.ID,
 		&i.Name,
 		&i.CategoryID,
+		&i.Image,
 		&i.Stock,
 		&i.Sell,
 		&i.Price,

@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	AccessToken = "access_token"
+	AccessToken = "token"
 	AuthorizationPayloadKey = "authorization_payload"
 )
 

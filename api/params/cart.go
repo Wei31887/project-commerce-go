@@ -12,7 +12,7 @@ type AddCartItemRequest struct {
 }
 
 type DeleteCartItemRequest struct {
-	ProductId int64 `json:"product_id" binding:"required"`
+	CartItemId int64 `json:"cart_item_id" binding:"required"`
 }
 
 type CartItemResponse struct {

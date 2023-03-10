@@ -2,6 +2,7 @@ CREATE TABLE "products" (
   "id" bigserial PRIMARY KEY,
   "name" varchar NOT NULL DEFAULT '',
   "category_id" bigint NOT NULL DEFAULT 0,
+  "image" varchar NOT NULL DEFAULT '',
   "stock" bigint NOT NULL DEFAULT 0,
   "sell" bigint NOT NULL DEFAULT 0,
   "price" decimal(12,2) NOT NULL DEFAULT 0,

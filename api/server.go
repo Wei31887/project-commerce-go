@@ -49,6 +49,7 @@ func (server *Server) apiGroup() {
 	server.Router.POST("token/renew", server.RenewAccessToken)
 
 	server.Router.POST("/product", server.ListProduct)
+	server.Router.POST("/product/content", server.GetProduct)
 	server.Router.POST("/product/category", server.ListAllProductCategory)
 	// api with admission
 	server.authorizationGroup()

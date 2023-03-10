@@ -23,7 +23,26 @@ func (server *Server) CreateProduct(ctx *gin.Context) {
 		return
 	}
 
-	rsp := params.CreateProductResponse{
+	rsp := params.ProductResponse{
+		Product: product,
+	}
+	response.SuccessResponse(ctx, rsp)
+}
+
+func (server *Server) GetProduct(ctx *gin.Context) {
+	var req params.GetProductRequest
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		response.ErrResponse(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	product, err := server.Store.GetProduct(ctx, req.ProductId)
+	if err != nil {
+		response.ErrResponse(ctx, http.StatusInternalServerError, err)
+		return
+	}
+
+	rsp := params.ProductResponse{
 		Product: product,
 	}
 	response.SuccessResponse(ctx, rsp)
@@ -36,7 +55,10 @@ func (server *Server) ListProduct(ctx *gin.Context) {
 		return
 	}
 
-	arg := sqlc.ListProductParams(req)
+	arg := sqlc.ListProductParams{
+		Offset: req.Offset,
+		Limit:  req.Limit,
+	}
 	products, err := server.Store.ListProduct(ctx, arg)
 	if err != nil {
 		response.ErrResponse(ctx, http.StatusInternalServerError, err)

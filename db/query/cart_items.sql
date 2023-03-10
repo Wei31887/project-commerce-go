@@ -10,6 +10,7 @@ RETURNING *;
 
 -- name: ListCartItem :many
 SELECT
+	cart_items.id,
 	cart_items.cart_id,
 	cart_items.product_id,
 	cart_items.count,
@@ -28,4 +29,4 @@ ORDER BY
 
 -- name: DeleteCartItem :exec
 DELETE FROM cart_items
-WHERE cart_id = $1 and product_id = $2;
+WHERE id = $1 and cart_id = $2;

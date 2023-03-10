@@ -44,7 +44,6 @@ type UserResponse struct {
 }
 
 type LoginRequest struct {
-	UserName string `json:"user_name" binding:"required,alphanum"`
-	Password string `json:"password" binding:"required,min=5"`
 	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required,min=5"`
 }

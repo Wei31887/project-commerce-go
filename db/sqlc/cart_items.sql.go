@@ -40,21 +40,22 @@ func (q *Queries) CreateCartItem(ctx context.Context, arg CreateCartItemParams) 
 
 const deleteCartItem = `-- name: DeleteCartItem :exec
 DELETE FROM cart_items
-WHERE cart_id = $1 and product_id = $2
+WHERE id = $1 and cart_id = $2
 `
 
 type DeleteCartItemParams struct {
-	CartID    int64 `json:"cart_id"`
-	ProductID int64 `json:"product_id"`
+	ID     int64 `json:"id"`
+	CartID int64 `json:"cart_id"`
 }
 
 func (q *Queries) DeleteCartItem(ctx context.Context, arg DeleteCartItemParams) error {
-	_, err := q.db.ExecContext(ctx, deleteCartItem, arg.CartID, arg.ProductID)
+	_, err := q.db.ExecContext(ctx, deleteCartItem, arg.ID, arg.CartID)
 	return err
 }
 
 const listCartItem = `-- name: ListCartItem :many
 SELECT
+	cart_items.id,
 	cart_items.cart_id,
 	cart_items.product_id,
 	cart_items.count,
@@ -73,6 +74,7 @@ ORDER BY
 `
 
 type ListCartItemRow struct {
+	ID        int64  `json:"id"`
 	CartID    int64  `json:"cart_id"`
 	ProductID int64  `json:"product_id"`
 	Count     int64  `json:"count"`
@@ -93,6 +95,7 @@ func (q *Queries) ListCartItem(ctx context.Context, cartID int64) ([]ListCartIte
 	for rows.Next() {
 		var i ListCartItemRow
 		if err := rows.Scan(
+			&i.ID,
 			&i.CartID,
 			&i.ProductID,
 			&i.Count,

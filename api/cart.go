@@ -69,8 +69,8 @@ func (server *Server) DeleteCartItem(ctx *gin.Context) {
 	payload := ctx.MustGet(middleware.AuthorizationPayloadKey).(*token.Payload)
 
 	err := server.Store.DeleteCartItem(ctx, sqlc.DeleteCartItemParams{
+		ID: req.CartItemId,
 		CartID: payload.UserID,
-		ProductID: req.ProductId,
 	})
 	if err != nil {
 		response.ErrResponse(ctx, http.StatusInternalServerError, err)
