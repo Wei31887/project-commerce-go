@@ -22,6 +22,11 @@ ORDER BY id
 LIMIT $1
 OFFSET $2;
 
+-- name: ListHitProduct :many
+SELECT * FROM products
+ORDER BY sell desc
+LIMIT $1;
+
 -- name: ListProductByType :many
 SELECT * FROM products
 WHERE category_id = $1

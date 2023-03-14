@@ -98,6 +98,47 @@ func (q *Queries) GetProduct(ctx context.Context, id int64) (Product, error) {
 	return i, err
 }
 
+const listHitProduct = `-- name: ListHitProduct :many
+SELECT id, name, category_id, image, stock, sell, price, on_sell, description, created_at, updated_at FROM products
+ORDER BY sell desc
+LIMIT $1
+`
+
+func (q *Queries) ListHitProduct(ctx context.Context, limit int32) ([]Product, error) {
+	rows, err := q.db.QueryContext(ctx, listHitProduct, limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Product{}
+	for rows.Next() {
+		var i Product
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.CategoryID,
+			&i.Image,
+			&i.Stock,
+			&i.Sell,
+			&i.Price,
+			&i.OnSell,
+			&i.Description,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listProduct = `-- name: ListProduct :many
 SELECT id, name, category_id, image, stock, sell, price, on_sell, description, created_at, updated_at FROM products
 ORDER BY id

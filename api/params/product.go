@@ -26,10 +26,14 @@ type ListProductRequest struct {
 	Offset int32 `json:"offset"`
 }
 
+type ListHitProductRequest struct {
+	Limit  int32 `json:"limit" binding:"required,min=1"`
+}
+
 type ListProductByTypeRequest struct {
 	CategoryID int64 `json:"category_id" binding:"required"`
 	Limit      int32 `json:"limit" binding:"required,min=1"`
-	Offset     int32 `json:"offset" binding:"required,min=1"`
+	Offset     int32 `json:"offset"`
 }
 
 type ListProductResponse struct {

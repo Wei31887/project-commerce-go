@@ -669,6 +669,21 @@ func (mr *MockStoreMockRecorder) ListCartItem(arg0, arg1 interface{}) *gomock.Ca
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListCartItem", reflect.TypeOf((*MockStore)(nil).ListCartItem), arg0, arg1)
 }
 
+// ListHitProduct mocks base method.
+func (m *MockStore) ListHitProduct(arg0 context.Context, arg1 int32) ([]sqlc.Product, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListHitProduct", arg0, arg1)
+	ret0, _ := ret[0].([]sqlc.Product)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListHitProduct indicates an expected call of ListHitProduct.
+func (mr *MockStoreMockRecorder) ListHitProduct(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListHitProduct", reflect.TypeOf((*MockStore)(nil).ListHitProduct), arg0, arg1)
+}
+
 // ListProduct mocks base method.
 func (m *MockStore) ListProduct(arg0 context.Context, arg1 sqlc.ListProductParams) ([]sqlc.Product, error) {
 	m.ctrl.T.Helper()

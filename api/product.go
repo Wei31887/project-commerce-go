@@ -71,6 +71,24 @@ func (server *Server) ListProduct(ctx *gin.Context) {
 	response.SuccessResponse(ctx, rsp)
 }
 
+func (server *Server) ListHitProduct(ctx *gin.Context) {
+	var req params.ListHitProductRequest
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		response.ErrResponse(ctx, http.StatusBadRequest, err)
+		return
+	}
+	products, err := server.Store.ListHitProduct(ctx, req.Limit)
+	if err != nil {
+		response.ErrResponse(ctx, http.StatusInternalServerError, err)
+		return
+	}
+
+	rsp := params.ListProductResponse{
+		Product: products,
+	}
+	response.SuccessResponse(ctx, rsp)
+}
+
 func (server *Server) ListProductByType(ctx *gin.Context) {
 	var req params.ListProductByTypeRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {

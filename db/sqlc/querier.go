@@ -55,6 +55,7 @@ type Querier interface {
 	GetUserDeliver(ctx context.Context, id int64) (UserDeliver, error)
 	ListAllProductCategory(ctx context.Context) ([]ProductCategory, error)
 	ListCartItem(ctx context.Context, cartID int64) ([]ListCartItemRow, error)
+	ListHitProduct(ctx context.Context, limit int32) ([]Product, error)
 	ListProduct(ctx context.Context, arg ListProductParams) ([]Product, error)
 	ListProductByType(ctx context.Context, arg ListProductByTypeParams) ([]Product, error)
 	ListProductCategory(ctx context.Context, categoryID int64) ([]ProductCategory, error)
