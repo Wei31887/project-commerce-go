@@ -20,6 +20,10 @@ RETURNING *;
 SELECT * FROM orders
 WHERE id = $1 LIMIT 1;
 
+-- name: ListOrder :many
+SELECT * FROM orders
+WHERE user_id = $1;
+
 -- name: DeleteOrder :exec
 DELETE FROM orders
 WHERE id = $1;

@@ -68,6 +68,7 @@ func (server *Server) authorizationGroup() {
 		authorGroup.POST("/logout", server.Logout)
 
 		authorGroup.POST("/order", server.CreateOrder)
+		authorGroup.POST("/order/list", server.ListOrder)
 
 		authorGroup.POST("/user/info/update", server.UpdateUserInfo)
 		authorGroup.POST("/user/password/update", server.UpdateUserPassword)

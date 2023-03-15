@@ -20,7 +20,7 @@ func (server *Server) CreateOrder(ctx *gin.Context) {
 	}
 
 	payload := ctx.MustGet(middleware.AuthorizationPayloadKey).(*token.Payload)
-	
+
 	arg := sqlc.OrderParams{
 		UserID: payload.UserID,
 		Item:   req.Item,
@@ -34,4 +34,20 @@ func (server *Server) CreateOrder(ctx *gin.Context) {
 	}
 
 	response.SuccessResponse(ctx, order)
+}
+
+func (server *Server) ListOrder(ctx *gin.Context) {
+
+	payload := ctx.MustGet(middleware.AuthorizationPayloadKey).(*token.Payload)
+
+	orders, err := server.Store.ListOrder(ctx, payload.UserID)
+	if err != nil {
+		err = fmt.Errorf("order transaction failed: %v", err)
+		response.ErrResponse(ctx, http.StatusBadRequest, err)
+		return
+	}
+	rsp := params.ListOrderResponse{
+		Orders: orders,
+	}
+	response.SuccessResponse(ctx, rsp)
 }

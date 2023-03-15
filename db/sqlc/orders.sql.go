@@ -71,6 +71,41 @@ func (q *Queries) GetOrder(ctx context.Context, id uuid.UUID) (Order, error) {
 	return i, err
 }
 
+const listOrder = `-- name: ListOrder :many
+SELECT id, user_id, total_amount, total_count, is_paied, created_at FROM orders
+WHERE user_id = $1
+`
+
+func (q *Queries) ListOrder(ctx context.Context, userID int64) ([]Order, error) {
+	rows, err := q.db.QueryContext(ctx, listOrder, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Order{}
+	for rows.Next() {
+		var i Order
+		if err := rows.Scan(
+			&i.ID,
+			&i.UserID,
+			&i.TotalAmount,
+			&i.TotalCount,
+			&i.IsPaied,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const updateOrderInfo = `-- name: UpdateOrderInfo :one
 UPDATE orders SET 
   total_amount = $2, 
