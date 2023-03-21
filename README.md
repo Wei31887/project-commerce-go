@@ -3,6 +3,8 @@
 - login interface 
 - JWT token based authorization
 
+# Database
+![](./e-commerce-2.png)
 
 # TODO:
 - product list
